@@ -1,19 +1,18 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
+const remote =
+  'mongodb+srv://JBoffo:240819@mocx.pc68srq.mongodb.net/?retryWrites=true&w=majority';
+const local = 'mongodb://localhost:27017/mocx-db';
 
-const url = "";
-
-const Database = () => {
+export const Database = () => {
   mongoose
-    .connect(process.env.URI_DATABASE, {
+    .connect(local, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
     .then(() => {
-      console.log("Running Database");
+      console.log('Running Database');
     })
     .catch((err) => {
       return console.log(`Connection error with database: ${err}`);
     });
 };
-
-export default Database;

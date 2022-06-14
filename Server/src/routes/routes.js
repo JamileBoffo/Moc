@@ -1,14 +1,15 @@
-import SwaggerUI from "swagger-ui";
-import express from 'express'
-
-import validarCPF from '../middlewares/middleware.js';
-import { allAppController, createAppController, updateAppController, deleteAppController } from '../controllers/app-controller.js';
+import express from 'express';
+import { validCPF, validId } from '../middlewares/middleware.js';
+import {
+  allAppController,
+  createAppController,
+  updateAppController,
+  deleteAppController,
+} from '../controllers/app-controller.js';
 
 export const route = express.Router();
 
-route.use('/api', SwaggerUI.serve);
-
 route.get('/apps', allAppController);
-route.post('/', validarCPF, createAppController);
-route.put('/update/:id', validarCPF, updateAppController);
-route.delete('/delete/:id', validarCPF, deleteAppController)
+route.post('/registration', validCPF, createAppController);
+route.put('/update/:id', validId, updateAppController);
+route.delete('/delete/:id', validId, deleteAppController);
