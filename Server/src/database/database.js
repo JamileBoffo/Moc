@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import 'dotenv/config'
 
 const local = 'mongodb://localhost:27017/mocx-db';
 
