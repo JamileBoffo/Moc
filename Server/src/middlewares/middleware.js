@@ -1,29 +1,55 @@
-export const validarCPF = (cpf) => {
-  cpf = cpf.replace(/[^\d]+/g, '');
-  if (cpf == '') return false;
-  if (
-    cpf.length != 11 ||
-    cpf == '00000000000' ||
-    cpf == '11111111111' ||
-    cpf == '22222222222' ||
-    cpf == '33333333333' ||
-    cpf == '44444444444' ||
-    cpf == '55555555555' ||
-    cpf == '66666666666' ||
-    cpf == '77777777777' ||
-    cpf == '88888888888' ||
-    cpf == '99999999999'
-  )
-    return false;
-  add = 0;
-  for (i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
-  rev = 11 - (add % 11);
-  if (rev == 10 || rev == 11) rev = 0;
-  if (rev != parseInt(cpf.charAt(9))) return false;
-  add = 0;
-  for (i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
-  rev = 11 - (add % 11);
-  if (rev == 10 || rev == 11) rev = 0;
-  if (rev != parseInt(cpf.charAt(10))) return false;
-  return true;
-};
+export const TestaCPF= (req, res, next) => {
+  const create = req.body
+  const strCpf = create.cpf
+
+  var cpf = strCpf.toString();
+
+  cpf = cpf.replace(/[.\-_]/g, "");
+
+  if (cpf == "" || cpf.toString().length != 11 || /^(\d)\1{10}$/.test(cpf)) {
+    res.send({
+      message: 'CPF inválido',
+    });		
+  } else {
+    var amount = 0;
+
+    for (let i = 1; i <= 9; i++) {
+      amount += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    }
+
+    var validateFirstDigit = (amount * 10) % 11;
+
+    validateFirstDigit = validateFirstDigit >= 10 ? 0 : validateFirstDigit;
+
+    if (validateFirstDigit != parseInt(cpf.substring(9, 10))) {
+      res.send({
+        message: 'CPF inválido',
+      });		
+    } else {
+      amount = 0;
+
+      for (let i = 1; i <= 10; i++) {
+        amount += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+      }
+
+      var validateSecondDigit = (amount * 10) % 11;
+
+      validateSecondDigit = validateSecondDigit >= 10 ? 0 : validateSecondDigit;
+
+      const compareElement = validateSecondDigit != parseInt(cpf.substring(10, 11)) ? false : true;
+
+      if (compareElement == true) {
+        res.send({
+          message: 'CPF válido',
+        });	
+        next()	
+      } {
+        res.send({
+          message: 'CPF inválido',
+        });		
+      }
+      
+    }
+  }
+  
+}
