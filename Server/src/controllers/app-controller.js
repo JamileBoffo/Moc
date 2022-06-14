@@ -16,8 +16,7 @@ export const allAppController = async (req, res) => {
   res.send(app);
 };
 
-export const createAppController = async (req, res) => {
-  console.log('teste')
+export const createAppController = async (req, res, TestaCPF) => {
   const app = req.body;
 
   const newApp = await createAppService(app);
@@ -35,9 +34,7 @@ export const updateAppController = async (req, res) => {
   }
 
   const updated = await updateAppService(idParam, appUpdated);
-  res.send(updated, {
-    message: 'Alterado com sucesso!',
-  });
+  res.send(updated);
 };
 
 export const deleteAppController = async (req, res) => {

@@ -16,4 +16,3 @@ export const Database = () => {
       return console.log(`Connection error with database: ${err}`);
     });
 };
-
