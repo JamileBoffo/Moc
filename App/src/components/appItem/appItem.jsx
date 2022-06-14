@@ -1,20 +1,7 @@
-import "./appItem.css";
+import "./AppItem.css";
 import { ActionMode } from "../../constants";
 
-export function appItem({ app, index, remove, add, clickItem, mode }) {
-  const removeButtom = (canRender, index) =>
-    Boolean(canRender) && (
-      <button
-        disabled={mode !== ActionMode.NORMAL}
-        className="Action__remove"
-        onClick={(e) => {
-          e.stopPropagation();
-          remove(index);
-        }}
-      >
-        Remover
-      </button>
-    );
+export function AppItem({ app, index, clickItem, mode }) {
 
   const badgeAction = (canRender) => {
     if (canRender)

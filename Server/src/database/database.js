@@ -5,7 +5,7 @@ const local = 'mongodb://localhost:27017/mocx-db';
 
 export const Database = () => {
   mongoose
-    .connect(local, {
+    .connect(process.env.DATABASE_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

@@ -1,27 +1,32 @@
-import "./appList.css";
-import { appService } from "../../services/appService";
+import "./AppList.css";
+import { service } from "../../services/appService";
 import { useState, useCallback, useEffect } from "react";
-import { appItem } from "../appItem/appItem";
+import { AppItem } from "../AppItem/AppItem";
 import { ActionMode } from "../../constants";
 
-function appList({
+function AppList({
   appCreated,
   mode,
   appUpdated,
   appDeleted,
-  appEdit,
-  appRemove,
 }) {
-  const select = JSON.parse(localStorage.getItem("select")) ?? {};
-
-  const [app, setApp] = useState([]);
-  const [appselect, setAppSelect] = useState(select);
+  const [app, setApp] = useState([])
   const [modal, setModal] = useState(false);
 
   const getList = async () => {
-    const response = await appService.all();
+    const response = await service.all();
     setApp(response);
   };
+
+  const getById = async (id) => {
+    const response = await service.getById(id);
+    const mapper = {
+      [ActionMode.NORMAL]: () => setModal(response),
+      [ActionMode.UPDATE]: () => appUpdated(response),
+      [ActionMode.DELETE]: () => appDeleted(response),
+    };
+    mapper[mode]();
+  }
 
   const createList = useCallback(
     (app) => {
@@ -44,16 +49,16 @@ function appList({
   return (
     <div className="appList">
         {app.map((app,index) => (
-            <appItem
+            <AppItem
                 mode={mode}
                 key={`appItem-${index}`}
                 app={app}
                 index={index}
-                clickItem={(id) => getAppById(id)}
+                clickItem={(id) => getById(id)}
             />
         ))}
     </div>
   );
 }
 
-export default appList;
+export default AppList;
